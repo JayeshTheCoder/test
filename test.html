@@ -1,43 +1,37 @@
 <!DOCTYPE html>
-
-<html lang=”en”>
-
+<html lang="en">
 <head>
-
-<meta charset=”UTF-8">
-
-<meta name=”viewport” content=”width=device-width, initial-scale=1.0">
-
-<title>Run Python Script</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask POST Example</title>
 </head>
-
 <body>
-
-    <button onclick="runPythonScript()">Run Python Script</button>
+    <h1>Flask POST Request Example</h1>
+    <input type="text" id="message" placeholder="Enter your message">
+    <button id="sendBtn">Send</button>
+    
+    <div id="output"></div> <!-- Div to display output -->
 
     <script>
-    
-    function runPythonScript() {
-    
-    var data = {
-    
-    message: "Hello from HTML!"
-    
-    };
-    
-    var xhr = new XMLHttpRequest();
-    
-    xhr.open("POST", "http://localhost:5000/run_script", true);
-    
-    xhr.setRequestHeader("Content-Type", "application/json");
-    
-    xhr.send(JSON.stringify(data));
-    
-    }
-    
+        document.getElementById('sendBtn').addEventListener('click', function() {
+            const message = document.getElementById('message').value;
+
+            fetch('http://localhost:5000/run_script', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message }) // Send the message as JSON
+            })
+            .then(response => response.json()) // Parse JSON response
+            .then(data => {
+                // Display the output in the output div
+                document.getElementById('output').innerText = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
-
 </body>
-
 </html>
